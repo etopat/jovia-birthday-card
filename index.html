@@ -13,6 +13,8 @@
       --accent-2:#ff7ab6;
       --card-bg: rgba(255,255,255,0.85);
       --glass: rgba(255,255,255,0.6);
+      --size: 120px;
+      --h-color: blueviolet;
     }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:Montserrat,system-ui,Arial;background:linear-gradient(135deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
@@ -41,6 +43,35 @@
     .meta{margin-top:10px;font-size:13px;color:#666}
 
     footer{padding:12px;text-align:center;font-size:13px;color:#666}
+    
+    /* Heart */
+    .heart {
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+    background-color: var(--h-color);
+    transform: rotate(-45deg);
+    border-radius: 8px;
+    animation: pulse .9s ease-in-out infinite alternate;
+    }
+    .heart::before,
+    .heart::after {
+        content: "";
+        position: absolute;
+        width: var(--size);
+        height: var(--size);
+        background-color: var(--h-color);
+        border-radius: 50%;
+    }
+    .heart::before {
+        top: calc(-0.5 * var(--size));
+        left: 0;
+    }
+    .heart::after {
+        top: 0;
+        left: calc(0.5 * var(--size));
+        content: "I love u";
+    }
 
     /* responsive */
     @media (max-width:800px){
@@ -79,6 +110,7 @@
           <p>On the day you were born, the world got a little brighter. You are my answered prayer, my peace, and my greatest blessing. May this year bring you laughter, success, and every dream coming true. I love you deeply and I will celebrate you today and every day.</p>
           <p class="quote">“You are the story I want to read again and again.”</p>
           <p class="meta">— With all my love, <strong>Patrick</strong></p>
+          <div class="heart"></div>
         </div>
         
       </div>
