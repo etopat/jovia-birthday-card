@@ -14,7 +14,7 @@
       --card-bg: rgba(255,255,255,0.85);
       --glass: rgba(255,255,255,0.6);
       --size: 120px;
-      --h-color: blueviolet;
+      --h-color: red;
     }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:Montserrat,system-ui,Arial;background:linear-gradient(135deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
@@ -50,7 +50,7 @@
     width: var(--size);
     height: var(--size);
     background-color: var(--h-color);
-    transform: rotate(-45deg);
+    /* transform: rotate(-45deg); */
     border-radius: 8px;
     animation: pulse .9s ease-in-out infinite alternate;
     }
@@ -70,7 +70,9 @@
     .heart::after {
         top: 0;
         left: calc(0.5 * var(--size));
-        content: "I love u";
+    }
+    @keyframes pulse{
+      to { transform: scale(1.5); }
     }
 
     /* responsive */
