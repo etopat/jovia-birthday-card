@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday Jovia 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #ffefe9;
+      --bg2: #fff0f6;
+      --accent:#d6336c;
+      --accent-2:#ff7ab6;
+      --card-bg: rgba(255,255,255,0.85);
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Montserrat,system-ui,Arial;background:linear-gradient(135deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
+    .page{
+      min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+    .card{
+      width:100%;max-width:980px;background:var(--card-bg);border-radius:20px;box-shadow:0 10px 30px rgba(12,12,30,0.12);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:0;
+      backdrop-filter: blur(6px);
+    }
+    .left{
+      padding:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
+    }
+    .photo-wrap{width:220px;height:220px;border-radius:18px;overflow:hidden;flex-shrink:0;border:6px solid var(--glass);box-shadow:0 6px 18px rgba(0,0,0,0.08);}
+    .photo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+    h1{font-family:'Playfair Display',serif;margin:0;font-size:28px;color:#2a2a2a}
+    .sub{font-size:15px;color:#4b4b4b;text-align:center;max-width:320px}
+    .button-row{display:flex;gap:12px;margin-top:8px;justify-content:center}
+    .btn{padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;box-shadow:0 6px 18px rgba(214,51,108,0.2)}
+    .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.06)}
+
+    .right{padding:34px;display:flex;flex-direction:column;gap:12px;justify-content:center}
+    .message{font-size:18px;color:#2b2b2b;line-height:1.5;font-weight:500}
+    .quote{margin-top:8px;font-family:'Playfair Display',serif;font-size:20px;color:var(--accent);}
+    .meta{margin-top:10px;font-size:13px;color:#666}
+
+    footer{padding:12px;text-align:center;font-size:13px;color:#666}
+
+    /* responsive */
+    @media (max-width:800px){
+      .card{grid-template-columns:1fr;}
+      .left{padding:28px}
+      .right{padding:24px}
+      .photo-wrap{width:180px;height:180px}
+    }
+
+    /* small decorative hearts */
+    .hearts{position:absolute;top:18px;right:18px;display:flex;flex-direction:column;gap:8px}
+    .heart{width:18px;height:18px;background:var(--accent);clip-path:path('M0 6C0 2.7 2.7 0 6 0C7.6 0 9 0.7 10 1.7C11 0.7 12.4 0 14 0C17.3 0 20 2.7 20 6C20 12 10 20 10 20C10 20 0 12 0 6Z');opacity:0.9}
+
+    /* confetti canvas */
+    #confetti{position:absolute;inset:0;pointer-events:none}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <canvas id="confetti"></canvas>
+    <div class="card" role="main" aria-label="Birthday Card for Jovia">
+      <div class="left">
+        <div class="photo-wrap" aria-hidden>
+          <!-- Put the photo file named 'Jovia.jpg' in the same folder as this HTML when you host -->
+          <img src="Jovia.jpg" alt="Jovia smiling" id="joviaPhoto" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=400 height=400><rect width=100% height=100% fill=\'%23f0e9ee\'/><text x=50% y=50% dominant-baseline=middle text-anchor=middle font-family=Montserrat font-size=20 fill=%23d6336c>Jovia.jpg not found</text></svg>'"/>
+        </div>
+        <h1>Happy Birthday, Jovia! 🎉</h1>
+        <p class="sub">To the girl who lights up my world — today I celebrate you. Thank you for your smile, your strength, and your love.</p>
+        <div class="button-row">
+          <button class="btn btn-primary" id="wishBtn">Send Love ❤️</button>
+        </div>
+      </div>
+      <div class="right">
+        <div class="message" id="messageBlock">
+          <p>My dearest Jovia —</p>
+          <p>On the day you were born, the world got a little brighter. You are my answered prayer, my peace, and my greatest blessing. May this year bring you laughter, success, and every dream coming true. I love you deeply and I will celebrate you today and every day.</p>
+          <p class="quote">“You are the story I want to read again and again.”</p>
+          <p class="meta">— With all my love, <strong>Patrick</strong></p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple confetti effect (lightweight)
+    (function(){
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      let W, H, pieces = [];
+      function resize(){W = canvas.width = innerWidth; H = canvas.height = innerHeight}
+      window.addEventListener('resize', resize); resize();
+
+      function rand(min,max){return Math.random()*(max-min)+min}
+      function initPieces(){pieces = []; for(let i=0;i<120;i++){pieces.push({x:rand(0,W), y:rand(-H,0), r:rand(6,12), d:rand(1,4), c:['#ff5e7e','#ffd166','#c1fba4','#9ad3bc','#d6336c'][Math.floor(rand(0,5))], tilt:rand(-10,10)})}}
+      initPieces();
+      let t=0;
+      function draw(){ctx.clearRect(0,0,W,H); for(let p of pieces){ctx.beginPath(); ctx.fillStyle=p.c; ctx.ellipse(p.x,p.y,p.r,p.r, p.tilt*Math.PI/180,0,Math.PI*2); ctx.fill(); p.y += p.d; p.x += Math.sin(t+p.d); p.tilt += 0.02; if(p.y>H+20){p.y = -20; p.x = rand(0,W)}} t += 0.01; requestAnimationFrame(draw)}
+      draw();
+
+      // launch confetti on button click
+      document.getElementById('wishBtn').addEventListener('click', ()=>{
+        // small pop animation for the button
+        const btn = document.getElementById('wishBtn'); btn.disabled=true; btn.innerText='Sent ❤️'; setTimeout(()=>{btn.disabled=false; btn.innerText='Send Love ❤️'},2500);
+        // briefly increase pieces count
+        let old = pieces.length; pieces.length = 200; setTimeout(()=>{pieces.length = old},3000);
+
+        // Also open WhatsApp with a thank-you message to the target number
+        const phone = '256773959039';
+        const text = encodeURIComponent('Thank you Patrick for making my birthday so special!');
+        const url = `https://wa.me/${phone}?text=${text}`;
+        window.open(url, '_blank');
+      });
+
+    })();
+  </script>
+</body>
+</html>
